@@ -202,34 +202,17 @@ function App(){
   var glass='rgba(255,255,255,0.82)',border='rgba(0,0,0,0.08)',TXT='#0d1f0d',MUTED='#6a7a6a';
 
   return(
-    <div style={{
-      display:'flex',height:'100dvh',
-      backgroundImage:'url('+CFG.fond+')',backgroundSize:'cover',backgroundPosition:'center',
-      overflow:'hidden',fontSize:14,color:TXT
-    }}>
+    <div style={{display:'flex',height:'100dvh',backgroundImage:'url('+CFG.fond+')',backgroundSize:'cover',backgroundPosition:'center',overflow:'hidden',fontSize:14,color:TXT}}>
       {mob&&sb&&<div onClick={()=>setSb(false)} style={{position:'fixed',inset:0,background:'rgba(240,248,240,.55)',zIndex:49,backdropFilter:'blur(4px)'}}/>}
 
       {/* ══ SIDEBAR ══ */}
-      <div style={{
-        width:268,flexShrink:0,
-        background:glass,
-        backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',
-        borderRight:'1px solid '+border,
-        display:'flex',flexDirection:'column',
-        boxShadow:'2px 0 24px rgba(0,80,30,.07)',
-        ...(mob?{position:'fixed',top:0,left:0,height:'100%',zIndex:50,
-          transition:'transform .26s',transform:sb?'translateX(0)':'translateX(-280px)'}:{})
-      }}>
+      <div style={{width:268,flexShrink:0,background:glass,backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',borderRight:'1px solid '+border,display:'flex',flexDirection:'column',boxShadow:'2px 0 24px rgba(0,80,30,.07)',
+        ...(mob?{position:'fixed',top:0,left:0,height:'100%',zIndex:50,transition:'transform .26s',transform:sb?'translateX(0)':'translateX(-280px)'}:{})}}>
 
-        {/* Logo + Nom CSS rouge/vert */}
         <div style={{padding:'14px 14px 12px',borderBottom:'1px solid '+border,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
-            {/* Logo JPG sans blend mode */}
-            <img src={CFG.logo} alt="logo"
-              style={{width:42,height:42,objectFit:'contain',borderRadius:6,flexShrink:0}}
-              onError={e=>e.target.style.display='none'}/>
+            <img src={CFG.logo} alt="logo" style={{width:42,height:42,objectFit:'contain',borderRadius:6,flexShrink:0}} onError={e=>e.target.style.display='none'}/>
             <div>
-              {/* Nom CYNOXA en CSS rouge -> vert */}
               <div className="cynoxa-name">CYNOXA</div>
               <div style={{fontSize:9.5,color:MUTED,letterSpacing:.5,marginTop:2,fontWeight:500,textTransform:'uppercase'}}>{CFG.sousTitre}</div>
             </div>
@@ -237,7 +220,6 @@ function App(){
           {mob&&<button onClick={()=>setSb(false)} style={{background:'none',border:'none',color:MUTED,cursor:'pointer',fontSize:22,lineHeight:1,marginLeft:4,flexShrink:0}}>x</button>}
         </div>
 
-        {/* Nouveau chat */}
         <div style={{padding:'12px 10px 8px'}}>
           <button onClick={newChat}
             style={{width:'100%',padding:'11px 0',background:'transparent',border:'1.5px solid '+G,borderRadius:10,color:G,fontWeight:700,fontSize:13,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:8,transition:'all .22s'}}
@@ -247,24 +229,19 @@ function App(){
           </button>
         </div>
 
-        {/* Historique */}
         <div style={{flex:1,overflowY:'auto',padding:'4px 8px'}}>
           {convs.length===0
             ?<div style={{textAlign:'center',color:'rgba(0,0,0,.2)',fontSize:12,padding:'28px 12px',lineHeight:1.9}}>Aucune conversation.<br/>Lance ta premiere question !</div>
             :convs.map(c=>(
               <div key={c.id} onClick={()=>{setAid(c.id);if(mob)setSb(false);}}
-                style={{padding:'9px 10px',borderRadius:8,cursor:'pointer',marginBottom:2,
-                  background:c.id===aid?'rgba(0,160,60,.1)':'transparent',
-                  borderLeft:c.id===aid?'2.5px solid '+G:'2.5px solid transparent',
-                  display:'flex',alignItems:'center',gap:6,transition:'all .15s'}}
+                style={{padding:'9px 10px',borderRadius:8,cursor:'pointer',marginBottom:2,background:c.id===aid?'rgba(0,160,60,.1)':'transparent',borderLeft:c.id===aid?'2.5px solid '+G:'2.5px solid transparent',display:'flex',alignItems:'center',gap:6,transition:'all .15s'}}
                 onMouseEnter={e=>{if(c.id!==aid)e.currentTarget.style.background='rgba(0,0,0,.04)';}}
                 onMouseLeave={e=>{if(c.id!==aid)e.currentTarget.style.background='transparent';}}>
                 <div style={{flex:1,overflow:'hidden'}}>
                   <div style={{fontSize:12.5,color:c.id===aid?TXT:MUTED,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',fontWeight:c.id===aid?600:400}}>{c.title}</div>
                   <div style={{fontSize:10,color:'rgba(0,0,0,.2)',marginTop:1}}>{c.messages.length} msg</div>
                 </div>
-                <button onClick={e=>delChat(c.id,e)}
-                  style={{background:'none',border:'none',color:'rgba(0,0,0,.18)',cursor:'pointer',fontSize:17,padding:'2px 5px',borderRadius:4,transition:'color .15s'}}
+                <button onClick={e=>delChat(c.id,e)} style={{background:'none',border:'none',color:'rgba(0,0,0,.18)',cursor:'pointer',fontSize:17,padding:'2px 5px',borderRadius:4,transition:'color .15s'}}
                   onMouseEnter={e=>e.currentTarget.style.color=R}
                   onMouseLeave={e=>e.currentTarget.style.color='rgba(0,0,0,.18)'}>x</button>
               </div>
@@ -272,17 +249,13 @@ function App(){
           }
         </div>
 
-        {/* Bas sidebar */}
         <div style={{borderTop:'1px solid '+border,padding:'12px 10px 14px'}}>
           <div style={{fontSize:10,color:'rgba(0,0,0,.28)',letterSpacing:1.2,textTransform:'uppercase',marginBottom:5}}>MODELE IA</div>
           <select value={model} onChange={e=>setModel(e.target.value)}
             style={{width:'100%',background:'rgba(255,255,255,.7)',border:'1px solid '+border,borderRadius:8,color:TXT,padding:'8px 10px',fontSize:12.5,cursor:'pointer',outline:'none',marginBottom:12}}>
             {CFG.modeles.map(m=><option key={m.id} value={m.id}>{m.label} - {m.tag}</option>)}
           </select>
-          {/* Badge JPG sans blend mode */}
-          <img src={CFG.badge} alt="Agence IA 100% Marocaine"
-            style={{width:'100%',objectFit:'contain',display:'block',borderRadius:6}}
-            onError={e=>e.target.style.display='none'}/>
+          <img src={CFG.badge} alt="badge" style={{width:'100%',objectFit:'contain',display:'block',borderRadius:6}} onError={e=>e.target.style.display='none'}/>
           <div style={{fontSize:9.5,color:'rgba(0,0,0,.22)',textAlign:'center',marginTop:10,letterSpacing:.4}}>{CFG.copyright}</div>
         </div>
       </div>
@@ -310,28 +283,26 @@ function App(){
             /* ══ ECRAN ACCUEIL ══ */
             <div style={{
               display:'flex',flexDirection:'column',alignItems:'center',
-              justifyContent:'center',
+              padding:mob?'16px 14px 16px':'20px 32px 16px',
               minHeight:'100%',
-              padding:mob?'16px 14px':'24px 32px',
               animation:'fadein .55s ease'
             }}>
-              {/* BANNIERE — centrée, taille moderee */}
+              {/* BANNIERE — en haut, taille reduite */}
               <div style={{
-                maxWidth:mob?'95%':'680px',
+                maxWidth:mob?'88%':'500px',
                 width:'100%',
-                borderRadius:14,
-                overflow:'hidden',
-                boxShadow:'0 4px 24px rgba(0,0,0,.12)',
-                marginBottom:mob?14:20,
+                borderRadius:12,overflow:'hidden',
+                boxShadow:'0 3px 18px rgba(0,0,0,.10)',
+                marginBottom:mob?'auto':0,
                 flexShrink:0
               }}>
-                <img
-                  src={CFG.banner}
-                  alt="CYNOXA"
-                  style={{width:'100%',display:'block',borderRadius:14}}
-                  onError={e=>e.target.style.display='none'}
-                />
+                <img src={CFG.banner} alt="CYNOXA"
+                  style={{width:'100%',display:'block',borderRadius:12}}
+                  onError={e=>e.target.style.display='none'}/>
               </div>
+
+              {/* Spacer flexible — pousse les suggestions vers le bas */}
+              <div style={{flex:1,minHeight:mob?16:24}}/>
 
               {/* Sous-titre */}
               <p style={{fontSize:mob?12.5:13.5,color:MUTED,marginBottom:12,fontWeight:500,textAlign:'center'}}>
@@ -339,16 +310,10 @@ function App(){
               </p>
 
               {/* Suggestions */}
-              <div style={{display:'flex',flexWrap:'wrap',gap:mob?8:10,justifyContent:'center',width:'100%',maxWidth:560}}>
+              <div style={{display:'flex',flexWrap:'wrap',gap:mob?8:10,justifyContent:'center',width:'100%',maxWidth:560,paddingBottom:8}}>
                 {CFG.suggestions.map(s=>(
                   <button key={s} onClick={()=>send(s)}
-                    style={{
-                      background:'rgba(255,255,255,.75)',backdropFilter:'blur(10px)',
-                      border:'1px solid rgba(0,0,0,.10)',borderRadius:22,
-                      padding:mob?'8px 14px':'9px 18px',
-                      color:MUTED,fontSize:mob?12:12.5,cursor:'pointer',
-                      transition:'all .2s',boxShadow:'0 1px 8px rgba(0,0,0,.06)'
-                    }}
+                    style={{background:'rgba(255,255,255,.75)',backdropFilter:'blur(10px)',border:'1px solid rgba(0,0,0,.10)',borderRadius:22,padding:mob?'8px 14px':'9px 18px',color:MUTED,fontSize:mob?12:12.5,cursor:'pointer',transition:'all .2s',boxShadow:'0 1px 8px rgba(0,0,0,.06)'}}
                     onMouseEnter={e=>{e.currentTarget.style.borderColor=G;e.currentTarget.style.color=G;e.currentTarget.style.background='rgba(255,255,255,.95)';}}
                     onMouseLeave={e=>{e.currentTarget.style.borderColor='rgba(0,0,0,.10)';e.currentTarget.style.color=MUTED;e.currentTarget.style.background='rgba(255,255,255,.75)';}}>
                     {s}
@@ -368,14 +333,7 @@ function App(){
                       :<><span style={{width:8,height:8,borderRadius:'50%',background:'linear-gradient(135deg,'+R+','+G+')',display:'inline-block'}}/><span>Vous</span></>
                     }
                   </div>
-                  <div style={{
-                    maxWidth:mob?'93%':'80%',padding:'12px 16px',
-                    borderRadius:msg.role==='user'?'18px 18px 4px 18px':'4px 18px 18px 18px',
-                    background:msg.role==='user'?'rgba(0,160,60,.1)':'rgba(255,255,255,.88)',
-                    backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',
-                    border:'1px solid '+(msg.role==='user'?'rgba(0,160,60,.22)':'rgba(0,0,0,.08)'),
-                    boxShadow:'0 2px 12px rgba(0,0,0,.06)',position:'relative'
-                  }}>
+                  <div style={{maxWidth:mob?'93%':'80%',padding:'12px 16px',borderRadius:msg.role==='user'?'18px 18px 4px 18px':'4px 18px 18px 18px',background:msg.role==='user'?'rgba(0,160,60,.1)':'rgba(255,255,255,.88)',backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',border:'1px solid '+(msg.role==='user'?'rgba(0,160,60,.22)':'rgba(0,0,0,.08)'),boxShadow:'0 2px 12px rgba(0,0,0,.06)',position:'relative'}}>
                     {msg.role==='user'?<p style={{margin:0,lineHeight:1.75,fontSize:14.5,color:TXT}}>{msg.content}</p>:<MD text={msg.content}/>}
                     {msg.streaming&&<span style={{display:'inline-block',width:2,height:'1em',background:G,marginLeft:3,verticalAlign:'middle',animation:'blink 1s step-end infinite'}}/>}
                     {!msg.streaming&&msg.content&&(
@@ -395,19 +353,8 @@ function App(){
         </div>
 
         {/* ══ BARRE SAISIE ══ */}
-        <div style={{
-          flexShrink:0,background:glass,
-          backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',
-          borderTop:'1px solid '+border,
-          padding:mob?'8px 12px 12px':'10px 24px 14px',
-          boxShadow:'0 -1px 16px rgba(0,0,0,.05)'
-        }}>
-          <div style={{
-            maxWidth:820,margin:'0 auto',display:'flex',gap:8,alignItems:'flex-end',
-            background:'rgba(255,255,255,.92)',border:'1.5px solid rgba(0,0,0,.08)',
-            borderRadius:18,padding:'8px 8px 8px 16px',
-            boxShadow:'0 3px 20px rgba(0,80,30,.07)',transition:'border-color .2s'
-          }}
+        <div style={{flexShrink:0,background:glass,backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',borderTop:'1px solid '+border,padding:mob?'8px 12px 12px':'10px 24px 14px',boxShadow:'0 -1px 16px rgba(0,0,0,.05)'}}>
+          <div style={{maxWidth:820,margin:'0 auto',display:'flex',gap:8,alignItems:'flex-end',background:'rgba(255,255,255,.92)',border:'1.5px solid rgba(0,0,0,.08)',borderRadius:18,padding:'8px 8px 8px 16px',boxShadow:'0 3px 20px rgba(0,80,30,.07)',transition:'border-color .2s'}}
             onFocusCapture={e=>e.currentTarget.style.borderColor=G}
             onBlurCapture={e=>e.currentTarget.style.borderColor='rgba(0,0,0,.08)'}>
             <textarea ref={taRef} value={input} onChange={resize} onKeyDown={onKey} rows={1}
