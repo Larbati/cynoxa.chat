@@ -69,8 +69,18 @@ async function callMake(question, onTyping, onDone, onError) {
       body: JSON.stringify({ message: { text: question } }),
     });
     if (!r.ok) { onError('Erreur HTTP ' + r.status); return; }
-    const data = await r.json();
-    const text = data.response || data.text || data.message || JSON.stringify(data);
+    /* Réponse texte brut depuis Make (pas de JSON) */
+    const raw = await r.text();
+    let text;
+    try {
+      /* Essai JSON au cas où */
+      const data = JSON.parse(raw);
+      text = data.response || data.text || data.message || raw;
+    } catch(e) {
+      /* Texte brut direct */
+      text = raw.trim();
+    }
+    if (!text) { onError('Réponse vide depuis CYNOXA MIA'); return; }
     /* Effet frappe : lettre par lettre */
     let i = 0;
     const step = () => {
